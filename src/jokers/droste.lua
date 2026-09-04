@@ -53,31 +53,14 @@ SMODS.Joker{
 
         if context.selling_self then
             if pseudorandom('droste') < G.GAME.probabilities.normal / card.ability.extra.odds then
-                local new_card = SMODS.create_card(
-                        {
-                            set = "Joker",
-                            area = G.jokers,
-                            key = "j_droste_droste",
-                        }
-                )
-
-                if (card.edition) then
-                    new_card:set_edition(card.edition, true)
-                else
-                    new_card:set_edition(nil, true)
-                end
-
-                --hard code just the vanilla stickers :)
-                new_card.ability.eternal = card.ability.eternal
-                new_card.ability.perishable = card.ability.perishable
-                new_card.ability.rental = card.ability.rental
-                new_card.ability.pinned = card.ability.pinned
+                local new_card = SMODS.copy_card(card, {
+                    no_add = true --don't add a glitched extra duplicate to our jokers list
+                })
 
                 --upgrade the stuff
                 new_card.ability.extra.odds = card.ability.extra.odds + 0.25
                 new_card.ability.extra.x_mult = card.ability.extra.x_mult + 1
 
-                --todo figure out how to only apply this to individual joker instances rather than the base
                 --calculate new sprite sheet location so he wears a different hat
                 positions = {
                     { 0, 0 },
