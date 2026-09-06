@@ -1,7 +1,7 @@
 local mod = SMODS.current_mod
 
-SMODS.Joker{
-    key='droste',
+SMODS.Joker {
+    key = 'droste',
     atlas = 'droste',
     pos = {
         x = 0,
@@ -11,6 +11,10 @@ SMODS.Joker{
         extra = {
             x_mult = 1,
             odds = 1,
+            pos = {    --also store pos here so we can serialize it,
+                x = 0, --which allows us to have correct sprites when loading a save
+                y = 0,
+            }
         }
     },
     rarity = 2,
@@ -83,7 +87,9 @@ SMODS.Joker{
                         end
 
                         new_pos = positions[new_index]
-                        new_card.children.center:set_sprite_pos({x = new_pos[1], y = new_pos[2]})
+                        new_card.children.center:set_sprite_pos({ x = new_pos[1], y = new_pos[2] })
+                        new_card.ability.extra.pos.x = new_pos[1]
+                        new_card.ability.extra.pos.y = new_pos[2]
                         break
                     end
                 end
@@ -102,6 +108,21 @@ SMODS.Joker{
         end
     end
 }
+
+-- Hook into the run-loading process so Jimbo is wearing the right hat
+-- (correct the sprites when loading from save file)
+local orig_game_start_run = Game.start_run
+Game.start_run = function(e, args)
+    orig_game_start_run(e, args)
+
+    if G.jokers and G.jokers.cards then
+        for _, joker in ipairs(G.jokers.cards) do
+            if joker.config.center.key == 'j_droste_droste' then
+                joker.children.center:set_sprite_pos({ x = joker.ability.extra.pos.x, y = joker.ability.extra.pos.y })
+            end
+        end
+    end
+end
 
 function gcf(first, second)
     first_factors = factors(first)
