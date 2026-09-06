@@ -64,20 +64,20 @@ SMODS.Joker{
                 --calculate new sprite sheet location so he wears a different hat
                 positions = {
                     { 0, 0 },
-                    { 0, 1 },
-                    { 0, 2 },
                     { 1, 0 },
-                    { 1, 1 },
-                    { 1, 2 },
                     { 2, 0 },
+                    { 0, 1 },
+                    { 1, 1 },
                     { 2, 1 },
+                    { 0, 2 },
+                    { 1, 2 },
                 }
 
                 local sprite_pos = card.children.center.sprite_pos
                 --very likely a better way to do this but whatever
                 for index, value in ipairs(positions) do
                     if sprite_pos.x == value[1] and sprite_pos.y == value[2] then
-                        new_index = (index + 1) % #positions
+                        new_index = (index + 1) % (#positions + 1)
                         if new_index == 0 then
                             new_index = 1 --thanks Lua
                         end
