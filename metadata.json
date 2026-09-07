@@ -2,8 +2,8 @@
   "id": "DrosteJoker",
   "name": "Droste Joker",
   "author": ["denneyl"],
-  "description": "TODO add the description :)",
+  "description": "Adds the Droste Joker. Inspired by the Droste Effect. Check it out!",
   "prefix": "droste",
   "main_file": "main.lua",
-  "version": "0.0.1"
+  "version": "1.0.0"
 }
